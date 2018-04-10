@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, ActivityIndicator, StyleSheet, Linking } from "react-native";
 import { List } from "react-native-elements";
 import CustomListItem from "./components/CustomListItem";
 
@@ -65,6 +65,50 @@ class App extends Component {
     );
   };
 
+  /**
+   * Testing only opens a reddit website with the post   * 
+   */
+  handlePress(item) {
+    const WEB_URL = "https://www.reddit.com";
+    // Open post link in webview
+    let urlToOpen = WEB_URL + item.data.permalink;
+
+    Linking.canOpenURL(urlToOpen).then(supported => {
+      if (supported) {
+        Linking.openURL(urlToOpen);
+      } else {
+        console.log('Don\'t know how to open URI: ' + urlToOpen);
+      }
+      return false
+    });
+  }
+
+  renderHeader = () => {
+    return (
+      <View
+        style={styles.header}
+      >
+      <Text style={styles.titleText}>{"Reddit Posts"}</Text>
+      </View>
+    );
+  };
+
+  renderFooter = () => {
+    if (!this.state.loading) return null;
+
+    return (
+      <View
+        style={{
+          paddingVertical: 20,
+          borderTopWidth: 1,
+          borderColor: "#CED0CE"
+        }}
+      >
+        <ActivityIndicator animating size="large" />
+      </View>
+    );
+  };
+
   render() {
     return (
       <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
@@ -77,6 +121,8 @@ class App extends Component {
             />          
           )}
           keyExtractor={item => item.data.id }
+          ListHeaderComponent={this.renderHeader}
+          ListFooterComponent={this.renderFooter}
           onRefresh={this.handleRefresh}
           refreshing={this.state.refreshing}
           onEndReached={this.handleLoadMore}
@@ -86,5 +132,19 @@ class App extends Component {
     );
   }
 }
+
+var styles = StyleSheet.create({
+  header:{
+      flex:1,
+      flexDirection:'row',
+      alignItems:'center',
+      justifyContent:'center',
+      paddingVertical: 20,
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
 
 export default App;
