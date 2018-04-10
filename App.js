@@ -85,10 +85,8 @@ class App extends Component {
 
   renderHeader = () => {
     return (
-      <View
-        style={styles.header}
-      >
-      <Text style={styles.titleText}>{"Reddit Posts"}</Text>
+      <View style={styles.header}>
+        <Text style={styles.titleText}>{"Reddit Posts"}</Text>
       </View>
     );
   };
@@ -97,13 +95,7 @@ class App extends Component {
     if (!this.state.loading) return null;
 
     return (
-      <View
-        style={{
-          paddingVertical: 20,
-          borderTopWidth: 1,
-          borderColor: "#CED0CE"
-        }}
-      >
+      <View style={styles.footer}>}
         <ActivityIndicator animating size="large" />
       </View>
     );
@@ -135,11 +127,16 @@ class App extends Component {
 
 var styles = StyleSheet.create({
   header:{
-      flex:1,
-      flexDirection:'row',
-      alignItems:'center',
-      justifyContent:'center',
-      paddingVertical: 20,
+    flex:1,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'center',
+    paddingVertical: 20,
+  },
+  footer:{
+    paddingVertical: 20,
+    borderTopWidth: 1,
+    borderColor: "#CED0CE"
   },
   titleText: {
     fontSize: 20,
