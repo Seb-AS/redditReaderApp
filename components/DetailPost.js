@@ -1,24 +1,35 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image} from "react-native";
+import { Platform, View, Text, StyleSheet, TouchableHighlight, Image, CameraRoll, NativeModules} from "react-native";
 
 export default class DetailPost extends Component
 {
- render()
- {
-    return(
-       <View style = { styles.mainContainer }>
-          <View style = { styles.left }>
-            <Text style={[styles.authorTextStyle]}> {this.props.navigation.state.params.item.data.author} </Text>
-          </View>            
-          <View style = { styles.middle }>
-            <Image style={[styles.thumbnail]} source={{ uri: this.props.navigation.state.params.item.data.thumbnail }}/>    
-          </View>      
-          <View style = { styles.middle }>
-            <Text style={ styles.textStyle }> {this.props.navigation.state.params.item.data.title} </Text>  
-          </View>           
-       </View>
-    );
- }
+    _handlePressImage = () => {
+        var uri = this.refs.logoImage.props.source;
+        if(Platform.OS === 'ios'){
+            return CameraRoll.saveToCameraRoll(uri);
+        } else {
+            return NativeModules.ImageUtil.save(uri, uri.split('/').pop());
+        }
+    }
+    
+    render()
+    {
+        return(
+        <View style = { styles.mainContainer }>
+            <View style = { styles.left }>
+                <Text style={[styles.authorTextStyle]}> {this.props.navigation.state.params.item.data.author} </Text>
+            </View>            
+            <View style = { styles.middle }>
+                <TouchableHighlight onPress={this._handlePressImage} underlayColor='#99d9f4'>
+                    <Image ref="logoImage" style={[styles.thumbnail]} source={{ uri: this.props.navigation.state.params.item.data.thumbnail }}/>   
+                </TouchableHighlight>                 
+            </View>      
+            <View style = { styles.middle }>
+                <Text style={ styles.textStyle }> {this.props.navigation.state.params.item.data.title} </Text>  
+            </View>           
+        </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create(
