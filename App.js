@@ -4,13 +4,14 @@ import { List } from "react-native-elements";
 import { StackNavigator } from "react-navigation";
 
 import CustomListItem from "./components/CustomListItem";
+import DetailPost from "./components/DetailPost";
 
 class App extends Component {
 
   static navigationOptions =
- {
-    title: "Reddit Posts",
- };
+  {
+      title: "Reddit Posts",
+  };
 
   constructor(props) {
     super(props);
@@ -220,62 +221,9 @@ var styles = StyleSheet.create({
     marginTop:8
   },
 });
-
-class DetailPost extends Component
-{
- render()
- {
-    return(
-       <View style = { styles.mainContainer }>
-          <View style = { styles.left }>
-            <Text style={[styles.authorTextStyle]}> {this.props.navigation.state.params.item.data.author} </Text>
-          </View>            
-          <View style = { styles.middle }>
-            <Image style={[styles.thumbnail]} source={{ uri: this.props.navigation.state.params.item.data.thumbnail }}/>    
-          </View>      
-          <View style = { styles.middle }>
-            <Text style={ styles.textStyle }> {this.props.navigation.state.params.item.data.title} </Text>  
-          </View>           
-       </View>
-    );
- }
-}
        
 export default Project = StackNavigator(
 {
   MainPage: { screen: App }, 
   DetailPage: { screen: DetailPost }
-});
-
-const styles = StyleSheet.create(
-{
-  mainContainer:
-  {
-      flex:1,  
-  },
-  authorTextStyle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign:"left",
-    color: "#000",
-  },
-  textStyle:
-  {
-      fontSize: 20,
-      textAlign: "left",
-      color: "#000",
-  },
-  thumbnail : {
-    width  : 200,
-    height : 200,
-  },
-  left: {
-    flex: 1,
-    justifyContent: "center"
-  },
-  middle: {
-    flex: 5,
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
 });
