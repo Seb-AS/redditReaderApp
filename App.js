@@ -23,7 +23,7 @@ class App extends Component {
 
   makeRemoteRequest = () => {
     const { count, after } = this.state;
-    const url = `https://api.reddit.com/r/pics/new.json?after=${after}&count=${count}&limit=50`;
+    const url = "https://api.reddit.com/r/pics/new.json?after=${after}&count=${count}&limit=50";
     this.setState({ loading: true });
 
     fetch(url)
@@ -77,7 +77,7 @@ class App extends Component {
       if (supported) {
         Linking.openURL(urlToOpen);
       } else {
-        console.log('Don\'t know how to open URI: ' + urlToOpen);
+        console.log("Don\'t know how to open URI: " + urlToOpen);
       }
       return false
     });
@@ -101,6 +101,18 @@ class App extends Component {
     );
   };
 
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1,
+          width: "100%",
+          backgroundColor: "#CED0CE"
+        }}
+      />
+    );
+  };
+
   render() {
     return (
       <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
@@ -113,6 +125,7 @@ class App extends Component {
             />          
           )}
           keyExtractor={item => item.data.id }
+          ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
           ListFooterComponent={this.renderFooter}
           onRefresh={this.handleRefresh}
@@ -128,9 +141,9 @@ class App extends Component {
 var styles = StyleSheet.create({
   header:{
     flex:1,
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'center',
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"center",
     paddingVertical: 20,
   },
   footer:{
@@ -140,7 +153,7 @@ var styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
