@@ -31,8 +31,13 @@ export default class CustomListItem extends Component {
         return getPostDate(postDate);
     }
 
+    _onPress = () => {
+        this.props.onPressItem(this.props.id);
+    };
+
     render() {
         let thumbnail = this.checkForEmptyImage(this.props.item.data);
+        let selected = this.props.item.selected;
         return (
             <TouchableHighlight onPress={this.props.onPress}>
                 <View style={{ flex: 1, flexDirection: "column", padding: 10 }}>
@@ -78,21 +83,21 @@ export default class CustomListItem extends Component {
 var styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: "row"
     },
     left: {
         flex: 1,
-        justifyContent: 'center'
+        justifyContent: "center"
     },
     middle: {
         flex: 5,
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        justifyContent: "space-between",
+        alignItems: "center"
     },
     right: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'flex-end'
+        justifyContent: "center",
+        alignItems: "flex-end"
     },
     thumbnail : {
         width  : 80,
@@ -106,13 +111,13 @@ var styles = StyleSheet.create({
     authorText: {
         fontSize: 18,
         fontWeight: "bold",
-        textAlign:'left'
+        textAlign:"left"
     },
     titleText: {
         fontSize: 10,
         height: 75,
-        textAlign:'left',
-        textAlignVertical: 'center'
+        textAlign:"left",
+        textAlignVertical: "center"
     },
     
   });
