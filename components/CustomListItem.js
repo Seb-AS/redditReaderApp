@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, Image } from 'react-native';
-import { Badge, Card } from 'react-native-elements';
+import React, { Component } from "react";
+import { View, Text, StyleSheet, TouchableHighlight, Image, TouchableOpacity} from "react-native";
+import { Badge, Card } from "react-native-elements";
+import { getPostDate } from "../utils/Utils";
 
-const placeholder = require('../assets/placeholder.jpeg');
+const placeholder = require("../assets/placeholder.jpeg");
 
 export default class CustomListItem extends Component {
 
@@ -10,38 +11,60 @@ export default class CustomListItem extends Component {
         super(props);
     }
 
-    checkForEmptyImage(source) {
-        if (source == "") {
-            return <Image style={styles.thumbnail} source={source} defaultSource={placeholder}/>;
+    /*checkForEmptyImage(data) {
+        return <Image ref={data.id} source={{uri: data.thumbnail}} style={styles.thumbnail} 
+        onError={(e) => this.refs[data.id].setNativeProps({src: [{uri: "http://demo.makitweb.com/broken_image/images/noimage.png"}]})}/>
+    }*/
+    
+    checkForEmptyImage(data) {
+        if (!data.thumbnail) {
+            return <Image style={styles.thumbnail} defaultSource={placeholder}/>;
         }
-
-        return <Image style={styles.thumbnail} source={{ uri: source }}/>
+        return <Image style={styles.thumbnail} source={{ uri: data.thumbnail }}/>
     }
 
-   
+    handleRemove(item) {
+        console.log("press remove");
+    }
+
+    formatDate(postDate) {
+        return getPostDate(postDate);
+    }
+
     render() {
-        let thumbnail = this.checkForEmptyImage(this.props.item.data.thumbnail);
+        let thumbnail = this.checkForEmptyImage(this.props.item.data);
         return (
             <TouchableHighlight onPress={this.props.onPress}>
-                <View style={{ flex: 1, flexDirection: 'column', padding: 10 }}>
-                    <View style={{ height: 120, flexDirection: 'row' }}>
-                        {thumbnail}                        
-                        <View style={{ flex: 1, flexDirection: 'column' }}>                   
-                            <View style={{ flex: 1, flexDirection: 'row' }}>
-                                <View style={{ flex: 1 }}></View>
-                                <View style={{ flex: 1, padding: 1}}>
-                                <Text >{this.props.item.data.author}</Text>
+                <View style={{ flex: 1, flexDirection: "column", padding: 10 }}>
+                    <View style={{ height: 130, flexDirection: "row"}}>
+                        <View style={{ flex: 1}}>                 
+                            <View style={styles.container}>
+                                <View style={styles.left}>
+                                     <Text style={styles.authorText}>{this.props.item.data.author}</Text>
+                                 </View>
+                                 <View style={styles.right}>
+                                    <Text>{this.formatDate(this.props.item.data.created_utc)}</Text>
+                                 </View>
                             </View>
-                                <View style={{ flex: 1 }}>
-                                    <Text >{this.props.item.data.created_utc}</Text>
-                                </View>
+                            <View style={styles.container}></View>
+                            <View style={styles.container}></View>
+                            <View style={styles.container}>
+                                 <View style={styles.left}>
+                                     {thumbnail}
+                                 </View>
+                                 <View style={{ flex: 3, padding: 3, height: 75}}>
+                                    <Text style={styles.titleText} numberOfLines={4} >{this.props.item.data.title}</Text>
+                                 </View>
+                                 
                             </View>
-                            <View style={{ flex: 3, padding: 5 }}>
-                                <Text numberOfLines={4} >{this.props.item.data.title}</Text>
-                            </View>
-                            <View style={{ flex: 1, flexDirection: 'row' }}>                             
-                                <View style={{ flex: 1, padding: 2 }}>
-                                     <Text numberOfLines={4} >{this.props.item.data.num_comments + " comments"}</Text>
+                            <View style={styles.container}></View>
+                            <View style={styles.container}></View>
+                            <View style={{ flex: 1, flexDirection: "row" }}>   
+                                <TouchableOpacity onPress={this.handleRemove}> style={styles.buttonStyle}>
+                                     <Text>Dismiss Post</Text>
+                                 </TouchableOpacity>                    
+                                <View style={styles.right}>
+                                     <Text>{this.props.item.data.num_comments + " comments"}</Text>
                                 </View>
                             </View>
                         </View>
@@ -53,9 +76,43 @@ export default class CustomListItem extends Component {
 }
 
 var styles = StyleSheet.create({
-    thumbnail : {
-        width  : 100,
-        height : 100,
-        margin : 7
+    container: {
+        flex: 1,
+        flexDirection: 'row'
     },
+    left: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    middle: {
+        flex: 5,
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    right: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end'
+    },
+    thumbnail : {
+        width  : 80,
+        height : 80,
+        marginTop:5
+    },
+    buttonStyle: {
+        height: 35,
+        marginTop:8
+    },
+    authorText: {
+        fontSize: 18,
+        fontWeight: "bold",
+        textAlign:'left'
+    },
+    titleText: {
+        fontSize: 10,
+        height: 75,
+        textAlign:'left',
+        textAlignVertical: 'center'
+    },
+    
   });
